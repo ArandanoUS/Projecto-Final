@@ -10,7 +10,7 @@ public class registrar {
         Scanner scanner = new Scanner(System.in);
         Refugio refugio = new Refugio();
         cargarDatos(refugio);
-        String nombreAdoptante = null, cedulaAdoptante, correoAdoptante, apellidoAdoptante, direccionAdoptante, respuesta, porpio, CedulaV;
+        String nombreAdoptante, cedulaAdoptante, correoAdoptante, apellidoAdoptante, direccionAdoptante, respuesta, porpio, CedulaV;
         int opcion = 0, opc = 0, edadAnimal;
         boolean usuarioRegistrado = false;
         Usuario adoptante = null;
@@ -33,28 +33,15 @@ public class registrar {
             scanner.nextLine();
         }
 
-          if (opcion == 1) {
-    System.out.println("\nPorfavor ingrese su Cedula: ");
-    String CedulaV = scanner.nextLine();
-
-    while (true) {
-        if (CedulaV.length() == 1 || CedulaV.length() == 2) {
-            if (Verificacion.validarCed(CedulaV)) {
-               // Cedula valida, continuar con el proceso
-                break;
-            } else {
+        if (opcion == 1) {
+            System.out.println("\nPorfavor ingrese su Cedula: ");
+            CedulaV = scanner.nextLine();
+            if ((!Verificacion.validarCed(CedulaV))) {
                 System.out.println("Cedula invalida.");
+                System.out.println("\nIngrese nuevamente su Cedula: ");
+                CedulaV = scanner.nextLine();
             }
-        } else {
-            System.out.println("La cedula extranjera");
-        }
 
-        System.out.println("\nIngrese nuevamente su Cedula: ");
-        CedulaV = scanner.nextLine();
-    }
-}
-            }
-    
             File file = new File("Usuarios.dat");
             if (file.exists()) {
                 try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
