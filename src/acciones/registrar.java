@@ -33,15 +33,28 @@ public class registrar {
             scanner.nextLine();
         }
 
-        if (opcion == 1) {
-            System.out.println("\nPorfavor ingrese su Cedula: ");
-            CedulaV = scanner.nextLine();
-            if ((!Verificacion.validarCed(CedulaV))) {
-                System.out.println("Cedula invalida.");
-                System.out.println("\nIngrese nuevamente su Cedula: ");
-                CedulaV = scanner.nextLine();
-            }
+          if (opcion == 1) {
+    System.out.println("\nPorfavor ingrese su Cedula: ");
+    String CedulaV = scanner.nextLine();
 
+    while (true) {
+        if (CedulaV.length() == 1 || CedulaV.length() == 2) {
+            if (Verificacion.validarCed(CedulaV)) {
+               // Cedula valida, continuar con el proceso
+                break;
+            } else {
+                System.out.println("Cedula invalida.");
+            }
+        } else {
+            System.out.println("La cedula extranjera");
+        }
+
+        System.out.println("\nIngrese nuevamente su Cedula: ");
+        CedulaV = scanner.nextLine();
+    }
+}
+            }
+    
             File file = new File("Usuarios.dat");
             if (file.exists()) {
                 try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
