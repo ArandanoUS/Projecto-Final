@@ -17,6 +17,7 @@ public class Solicitud {
     private boolean solicitudAprobada;
 
     private static final List<Solicitud> registroSolicitudes = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
 
     public Solicitud(String nombreCliente, String correo, String telefono, String tipoMascotaPreferida) {
         this.nombreCliente = nombreCliente;
@@ -33,6 +34,39 @@ public class Solicitud {
         System.out.println("Tipo de mascota preferida: " + tipoMascotaPreferida);
         System.out.println("Estado de la solicitud: " + (solicitudAprobada ? "Aprobada" : "Pendiente"));
     }
+    //metodo para solicitud
+    public void aprobarSolicitud() {
+        solicitudAprobada = true;
+    }
+
+    public void rechazarSolicitud() {
+        solicitudAprobada = false;
+    }
+
+    public static void aprobarRechazarSolicitud() {
+        System.out.println("Ingrese el número de solicitud que desea aprobar o rechazar:");
+        int numeroSolicitud = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        if (numeroSolicitud >= 1 && numeroSolicitud <= registroSolicitudes.size()) {
+            Solicitud solicitudSeleccionada = registroSolicitudes.get(numeroSolicitud - 1);
+            System.out.println("¿Desea aprobar o rechazar la solicitud? (A/R)");
+            String opcion = scanner.nextLine().trim().toUpperCase();
+
+            if (opcion.equals("A")) {
+                solicitudSeleccionada.aprobarSolicitud();
+                System.out.println("Solicitud aprobada correctamente.");
+            } else if (opcion.equals("R")) {
+                solicitudSeleccionada.rechazarSolicitud();
+                System.out.println("Solicitud rechazada correctamente.");
+            } else {
+                System.out.println("Opción no válida. Intente nuevamente.");
+            }
+        } else {
+            System.out.println("Número de solicitud no válido. Intente nuevamente.");
+        }
+    }
+
 
     public static void SysSolicitud() {
         cargarSolicitudesDesdeArchivo("solicitudes.txt");
@@ -44,6 +78,7 @@ public class Solicitud {
             System.out.println("1. Registrar nueva solicitud");
             System.out.println("2. Ver registro de solicitudes");
             System.out.println("3. Salir");
+            System.out.println("4. Aprobar o rechazar solicitud");
             System.out.println("Seleccione una opción:");
 
             try {
@@ -60,6 +95,9 @@ public class Solicitud {
                     case 3:
                         System.out.println("Saliendo del programa...");
                         break;
+                    case 4:
+                        aprobarRechazarSolicitud();
+                        break;
                     default:
                         System.out.println("Opción no válida. Intente nuevamente.");
                         break;
@@ -75,6 +113,7 @@ public class Solicitud {
                 scanner.nextLine();
             }
         }
+        scanner.close();
     }
 
     public static void registrarSolicitud(Scanner scanner) {
@@ -97,7 +136,7 @@ public class Solicitud {
         String telefono = scanner.nextLine();
 
         System.out.println("Ingrese el tipo de mascota preferida:");
-        System.out.print("\n-Perro\n-Gato\n-Perico\n-Conejo\n-Hamster\n-Pez");
+        //se supone que aquí se le tiene que agregar la lista de las mascotas :)
         String tipoMascotaPreferida = scanner.nextLine();
 
         Solicitud solicitud = new Solicitud(nombre, correo, telefono, tipoMascotaPreferida);
@@ -164,6 +203,7 @@ public class Solicitud {
             System.err.println("Error al cargar las solicitudes desde el archivo: " + e.getMessage());
         }
     }
+
 
     private static String obtenerValorDesdeLinea(String line) {
         if (line == null || !line.contains(":")) {
